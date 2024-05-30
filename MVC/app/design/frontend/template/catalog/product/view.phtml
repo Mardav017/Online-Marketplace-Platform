@@ -1,0 +1,75 @@
+<?php $productData = $this->getProduct(); ?>
+<?php $categoryModel = $this->getCategory(); ?>
+
+
+
+<div class="view m-3">
+    <table class="w-full rounded-lg">
+        <tr class="flex gap-10 p-2">
+            <td>
+                <img src="<?php echo ($this->getUrl('media/catalog/product/') . $productData->getImageLink()) ?>" class="bg-black w-72 h-72 ml-20 border-2"/>
+            </td>
+            <form action="<?php echo $this->getUrl('Sales/Quote/add') ?>" method="post" id='form'>
+                <td class="p-4">
+
+                    <input type="text" name="qdata[product_id]" value="<?php echo $productData->getProductId() ?>" hidden>
+                    
+                    
+
+                    <label class="text-3xl"><?php echo $productData->getName() ?></label><br><br>
+                    <label><b class="text-lg">Price: ₹<?php echo $productData->getPrice() ?></b></label><br><br>           
+                    <label>Category: <?php echo $categoryModel->getCategoryName() ?></label><br>
+                    <label>Color: <?php echo $productData->getColor() ?></label><br>
+                    <label>Size: <?php echo $productData->getSize() ?></label><br>
+                    <label>Qty:</label>
+
+                    <input type="number" name="qdata[qty]" class="w-12 p-1 m-2 rounded-md" id="quantity" value="1" min="1" max="10" onkeydown="return false;" oninput="validity.valid || (value = '1');"/><br/>
+
+                    <input type="submit" value="Add to Cart" class="bg-blue-500 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded">
+                </td>
+            </form>
+        </tr>
+        <tr>
+            <th class='text-xl'><u>Product Description</u></th>
+        </tr>
+        <tr class='text-justify'>
+        <td><p class='mx-20'><?php echo $productData->getDescription() ?></p></td>
+        </tr>
+    </table>
+</div>
+
+
+
+
+<div id="toast-simple" class="fixed right-1/3 bottom-20 items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow dark:text-white dark:divide-gray-700 space-x dark:bg-orange-400 hidden" role="alert">
+    
+    <div class="flex">
+        <span class="material-symbols-outlined">check_circle</span>
+        <div class="ps-4 text-sm font-semibold">Item Successfully Added!!</div>
+    </div>
+</div>
+
+
+
+<script>
+    $('#form').on('submit', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        $.ajax({
+            type: form.attr('method'),
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function(response) {
+                $('#toast-simple').fadeIn();
+                setTimeout(function() {
+                    $('#toast-simple').fadeOut();
+                }, 3000);
+                
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });        
+    });
+    
+</script>

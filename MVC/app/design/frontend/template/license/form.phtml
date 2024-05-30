@@ -1,0 +1,49 @@
+<?php
+$licenseRate = Mage::getModel('License/Rate')->getCollection();
+$licenseType = Mage::getModel('License/Rate')->getCollection();
+$session = Mage::getSingleton('core/session');
+
+
+// print_r($licenseRate);
+
+?>
+
+<div class="">
+    <form action="<?php echo $this->getUrl('license/license/save') ?>" method="POST">
+        <input type="number" name="ldata[id]" hidden>
+
+        <label>User Name: </label>
+        <input type="text" class="bg-green-300 p-1 rounded-md" name="ldata[user_name]" value="<?php echo ($session->get('user_name')); ?>"><br>
+        <label>State: </label>
+
+
+        <select name="ldata[state]" required>
+            <option value="0" hidden>Select State...</option>
+            <?php foreach ($licenseRate->getGroupByToFilter('state', 'state')->getData() as $state): ?>
+                <option value="<?php echo $state->getState() ?>"><?php echo $state->getState() ?></option>
+
+            <?php endforeach ?>
+        </select><br>
+        <label>License Type: </label>
+        
+        <select class="h-14" name="ldata[license_type][]" multiple  required>
+            <?php foreach ($licenseType->getData() as $type): ?>
+            <?php print_r($type); ?>
+            <option value="<?php echo $type->getLicenseType(); ?>"><?php echo $type->getLicenseType(); ?></option>
+                <!-- <option value="DL">DL</option> -->
+            <?php endforeach ?>
+        </select>
+
+        <!-- <input type="checkbox" name='ldata[LL]' value="LL">LL
+        <input type="checkbox" name='ldata[DL]' value="DL">DL    -->
+
+        
+        
+        <br>
+
+        <input type="submit" class="bg-blue-500 p-1 rounded-md" value="Submit">
+    </form>
+    
+    
+    
+</div>

@@ -1,0 +1,30 @@
+<H1>List Record</H1>
+
+
+<?php $records = Mage::getModel("license/license")->getCollection(); ?>
+
+
+<table border=2>
+    <tr>
+    
+    
+    <td>Id</td>
+    <td>Session Id</td>
+    <td>User Name</td>
+    <td>State</td>
+    <td>License Type</td>
+    <td>Total Rate</td>
+    
+    </tr>
+
+    <?php foreach ($records->addOrderByToFilter('id','DESC')->getData() as $request) : ?>
+        <tr>
+            <td><?php echo $request->getId(); ?></td>
+            <td><?php echo $request->getSessionId(); ?></td>
+            <td><?php echo $request->getUserName(); ?></td>
+            <td><?php echo $request->getState(); ?></td>
+            <td><?php echo $request->getLicenseType(); ?></td>
+            <td><?php echo $request->getTotalRate(); ?></td>
+        </tr>
+    <?php endforeach; ?>
+</table>

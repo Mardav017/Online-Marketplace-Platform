@@ -1,0 +1,65 @@
+<div class="dashboard_content">
+<?php
+
+$adminId = Mage::getSingleton('core/session')->get('admin_id');
+$admin = ADMIN_MODEL_USER::USERNAME;
+
+?>
+<div align='center' class='my-40'>
+<table align="center" class="rounded-md border-[#e3fcf9] shadow-md m-2">
+    
+    <tr>
+        <th>Username: <?php print_r(ucfirst($admin)); ?></th>
+        <th>ID: <?php print_r($adminId); ?></th>
+        
+        
+    </tr>
+
+    <tr>
+        <td>
+        <button  type='button' class="bg-yellow-400 p-1 rounded-md"><a href="<?php echo $this->getUrl("admin/catalog_product/form") ?>">Product Form</a></button>
+        </td>
+        <td>
+        <button  type='button' class="bg-yellow-400 p-1 rounded-md"><a href="<?php echo $this->getUrl("admin/catalog_product/list") ?>">Product List</a></button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        <button  type='button' class="bg-yellow-400 p-1 rounded-md"><a href="<?php echo $this->getUrl("admin/catalog_category/form") ?>">Category Form</a></button>
+        </td>
+        <td>
+        <button  type='button' class="bg-yellow-400 p-1 rounded-md"><a href="<?php echo $this->getUrl("admin/catalog_category/list") ?>">Category List</a></button>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+        <button  type='button' class="bg-yellow-400 p-1 rounded-md"><a href="<?php echo $this->getUrl("admin/banner/form") ?>">Banner Form</a></button>
+        </td>
+        <td>
+        <button  type='button' class="bg-yellow-400 p-1 rounded-md"><a href="<?php echo $this->getUrl("admin/banner/list") ?>">Banner List</a></button>
+        </td>
+    </tr>
+
+    <tr>
+    <td>
+        <button  type='button' class="bg-yellow-400 p-1 rounded-md"><a href="<?php echo $this->getUrl("admin/license/list") ?>">License User List</a></button>
+        </td>
+    <td>
+        <button  type='button' class="bg-yellow-400 p-1 rounded-md"><a href="<?php echo $this->getUrl("admin/sales/order") ?>">List of Orders</a></button>
+        </td>
+
+    </tr>
+        <td colspan='2'>
+            <button  type='button' class="bg-yellow-400 p-1 rounded-md"><a href="<?php echo $this->getUrl("admin/import/form") ?>">Import Product</a></button>
+        </td>
+
+    </tr>
+    
+    
+        
+</table>
+</div>
+
+
+</div>

@@ -1,0 +1,451 @@
+<?php $itemModel = $this->getItemModel();
+$qty = 0;
+foreach ($itemModel as $item) {
+    $qty += $item->getQty();
+}
+if (empty($qty)) {
+    header('location:'.$this->getUrl('sales/quote/view'));
+}
+?>
+<?php $quoteModel = $this->getQuoteModel(); ?>
+<?php $shippingMethod = $this->getShippingMethod(); ?>
+<?php $paymentMethod = $this->getPaymentMethod(); ?>
+<?php $customerModel = $this->getCustomer(); ?> 
+<?php $addressModel = $this->getCustomerAddress(); ?>
+
+
+<div class="flex p-3">
+    <div class="bg-white rounded-md mr-2 p-2 w-3/4 shadow-md h-fit">
+
+    <form action="<?php echo $this->getUrl('sales/quote/save') ?>" method="POST">
+        <!-- Address -->
+        <div class="h-fit  rounded-md p-2">
+            <b class="text-2xl">Your Address</b>
+            <hr class="my-px border-2 border-[#10393b4d]">
+
+            <br>
+            <div class="ml-8">
+
+                <?php foreach ($addressModel as $address): ?>
+
+                        <div id='addresslist<?php echo $address->getAddressId() ?>' class="flex justify-around" 
+                            data-json='{
+                        "address_id":"<?php echo ($address->getAddressId()) ? $address->getAddressId() : ""; ?>",
+                        "email":"<?php echo $customerModel->getCustomerEmail(); ?>",
+                        "billing_phone":"<?php echo $address->getBillingPhone(); ?>",
+                        "billing_address":"<?php echo $address->getBillingAddress(); ?>",
+                        "billing_city":"<?php echo $address->getBillingCity(); ?>",
+                        "billing_region":"<?php echo $address->getBillingRegion(); ?>",
+                        "billing_postcode":"<?php echo $address->getBillingPostcode(); ?>",
+                        "billing_country":"<?php echo $address->getBillingCountry(); ?>",
+                        "shipping_phone" :"<?php echo $address->getShippingPhone(); ?>",
+                        "shipping_address" :"<?php echo $address->getShippingAddress(); ?>",
+                        "shipping_city" :"<?php echo $address->getShippingCity(); ?>",
+                        "shipping_region" :"<?php echo $address->getShippingRegion(); ?>",
+                        "shipping_postcode" :"<?php echo $address->getShippingPostcode(); ?>",
+                        "shipping_country" :"<?php echo $address->getShippingCountry(); ?>"
+                    }'>
+                
+                            <div class="mb-2 w-full p-2 hover:bg-[#f2ebe5] rounded-md">
+                                <input type="radio" name="address_id" value='<?php echo $address->getAddressId() ?>' required>
+
+                                <b>Billing Address:</b>
+                                <i>
+                                    <?php
+                                    echo $address->getBillingAddress() . "," . $address->getBillingCity() . ", +" . $address->getBillingCountry() . " " . $address->getBillingPhone() . ", Postal Code: <b>" . $address->getBillingPostcode() . "</b>"
+                                        ?>
+                                
+                                
+                                </i>
+
+                                <section class="ml-4">
+                                <b>Shipping Address:</b>
+                                <i>
+                                <?php
+                                echo $address->getShippingAddress() . "," . $address->getShippingCity() . ", +" . $address->getShippingCountry() . " " . $address->getShippingPhone() . ", Postal Code: <b>" . $address->getShippingPostcode() . "</b>"
+                                    ?>
+                                </i>
+                                </section>
+
+
+                            
+                            </div>
+                            <button type="button" id="openAddressForm<?php echo $address->getAddressId() ?>" class="hover:text-blue-700 text-sm ml-6 font-semibold py-2 px-4 rounded">
+                            <span class="material-symbols-outlined">edit</span></button>
+
+                        </div>
+
+                <?php endforeach ?>
+
+
+                
+                
+                
+            </div>
+            <button type="button" id="openAddAddressForm" class="hover:text-blue-700 text-sm ml-6 font-semibold py-2 px-4 rounded" data-json='{}'>
+            + add a new address
+            </button>
+            
+        </div>
+
+
+        <div class="rounded-md p-2">
+            
+            <b class="text-2xl">Shipping Method</b>
+            <hr class="my-px border-2 border-[#10393b4d]">
+            <table class="ml-10 mt-2">
+                
+            <?php foreach ($shippingMethod as $key => $val): ?>
+                        <tr>
+                            <td>
+                                <input type="radio" name="shipping[shipping_method]" class="shipping" value="<?php echo $key ?>" required>
+                            </td>
+                            <td>
+                                <?php echo $key ?>
+                            </td>
+                        </tr>
+            <?php endforeach ?>
+            </table>
+        </div>
+
+
+        <div class="rounded-md p-2">
+            
+            <b class="text-2xl">Payment Method</b>
+            <hr class="my-px border-2 border-[#10393b4d]">
+            
+            <select class="w-full p-2 mt-2" name="pay[payment_method]" id="payment_method" required>
+                <option value="0" hidden>Select Payment Method</option>
+                <?php foreach ($paymentMethod as $payment): ?>
+                        <option value="<?php echo $payment ?>"><?php echo $payment ?></option>
+                <?php endforeach ?>
+            </select>
+
+        </div>
+
+            <div align='center' id="credit_card_form" class="m-2 hidden p-2">
+                <label for="credit_card_number">Card Number:</label>
+                <input type="text" id="credit_card_number" name="pay[card_number]" class="rounded-md p-2" placeholder='XXXX-XXXX-XXXX-XXXX' minlength="16" maxlength="16">
+                <label for="credit_card_number">Expiry:</label>
+                <input type="text" id="credit_card_number" name="expiry" class="rounded-md p-2" placeholder='MM/YY' minlength="5" maxlength="5"><br><br>
+                <label for="credit_card_number">Card Holder's Name:</label>
+                <input type="text" id="credit_card_number" name="name" class="rounded-md p-2">
+                <label for="credit_card_number">cvv:</label>
+                <input type="password" id="credit_card_number" name="cvv" class="rounded-md p-2 w-10" minlength="3" maxlength="3"><br><br>
+
+                
+                
+            </div>
+
+        <div id="phone_order_info" class="m-3 hidden">
+            <p>Call now at 987-654-XXXX to place your order.</p>
+        </div>
+
+
+        <div align="center" class="p-2">
+            <button type="submit" class="p-2 rounded-md bg-yellow-300 hover:bg-yellow-600">Place Order</button>
+        </div>
+        </div>
+    </form>
+
+
+        <!-- Modal -->
+        <div id="addressFormModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="bg-white w-1/2 p-6 rounded shadow-md">
+                <div class="flex justify-end">
+                    <!-- Close Button -->
+                    <button id="closeAddressForm" class="text-gray-700 hover:text-red-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <h2 class="text-2xl font-bold mb-4">Billing Address</h2>
+
+                <form action="<?php echo $this->getUrl('sales/quote/saveaddress') ?>" method="post" id="address_form">
+
+                <input type="number" id="address_id" name="add[address_id]" class="address" hidden>
+                <input type="number" id='customer_id' name="add[customer_id]" value='<?php echo $this->getCustomerId(); ?>'  hidden>
+
+                    <p class="text-sm my-2 underline">Billing Address</p>
+
+                    <table class="text-sm">
+
+                        <tr class="my-2">
+                            
+                            <td>
+                                <label class="">Email: </label>
+                            </td>
+                            <td>
+                                <input type="text" id = "email" class="address my-2 p-1 rounded-md border-[#10393b40] border"
+                                    name="add[email]">
+                            </td>
+                            <td>
+                                <label class="ml-16">Phone no.: </label>
+                            </td>
+                            <td>
+                                <input type="text" id = "billing_phone" class="address my-2 p-1 rounded-md border-[#10393b40] border"
+                                    name="add[billing_phone]">
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td colspan="1">
+                                <label class="">Address: </label>
+                            </td>
+                            <td colspan="3">
+                                <textarea name="add[billing_address]" id = "billing_address"
+                                    class="address p-1 rounded-md resize-none border-[#10393b40] border" cols="60"
+                                    rows="2"></textarea>
+                            </td>
+
+                        </tr>
+
+                        <tr class="">
+                            <td>
+                                <label class="">City: </label>
+
+                            </td>
+                            <td>
+                                <input type="text" id = "billing_city" class="address my-2 p-1 rounded-md border-[#10393b40] border"
+                                    name="add[billing_city]">
+                            </td>
+                            <td>
+                                <label class="ml-16">Region: </label>
+                            </td>
+                            <td>
+                                <input type="text" id = "billing_region" class="address p-1 rounded-md border-[#10393b40] border"
+                                    name="add[billing_region]">
+                            </td>
+
+                        </tr>
+                        <tr class="">
+                            <td>
+                                <label>Post Code: </label>
+
+                            </td>
+                            <td>
+                                <input type="text" id = "billing_postcode" class="address p-1 rounded-md border-[#10393b40] border"
+                                    name="add[billing_postcode]">
+                            </td>
+                            <td>
+                                <label class="ml-16">Country: </label>
+
+                            </td>
+                            <td>
+                                <input type="text" id = "billing_country" class="address p-1 rounded-md border-[#10393b40] border"
+                                    name="add[billing_country]">
+                            </td>
+                        </tr>
+
+
+
+                    </table><br>
+
+                    <p class="text-sm my-2 underline">Shipping Address</p>
+
+                    <input type="checkbox" name="" id="same_as_billing" onchange="copyBillingToShipping()"> 
+                    <span class="text-sm">same as billing address</span><br>
+
+                    <table class="text-sm">
+
+                        <tr class="my-2">
+                            <td>
+                                <label class="">Phone no.: </label>
+                            </td>
+                            <td class="">
+                                <input type="text" id='shipping_phone' class="address my-2 p-1 rounded-md border-[#10393b40] border"
+                                name="add[shipping_phone]">
+                            </td>
+                            
+
+                        </tr>
+
+                        <tr>
+                            <td colspan="1">
+                                <label class="">Address: </label>
+                            </td>
+                            <td colspan="3">
+                                <textarea name="add[shipping_address]" id='shipping_address'
+                                    class="address p-1 rounded-md resize-none border-[#10393b40] border" cols="60"
+                                    rows="2"></textarea>
+                            </td>
+
+                        </tr>
+
+                        <tr class="">
+                            <td>
+                                <label class="">City: </label>
+
+                            </td>
+                            <td>
+                                <input type="text" id='shipping_city' class="address my-2 p-1 rounded-md border-[#10393b40] border"
+                                    name="add[shipping_city]">
+                            </td>
+                            <td>
+                                <label class="ml-16">Region: </label>
+                            </td>
+                            <td>
+                                <input type="text" id='shipping_region' class="address p-1 rounded-md border-[#10393b40] border"
+                                    name="add[shipping_region]">
+                            </td>
+
+                        </tr>
+                        <tr class="">
+                            <td>
+                                <label>Post Code: </label>
+
+                            </td>
+                            <td>
+                                <input type="text" id='shipping_postcode' class="address p-1 rounded-md border-[#10393b40] border"
+                                    name="add[shipping_postcode]">
+                            </td>
+                            <td>
+                                <label class="ml-16">Country: </label>
+
+                            </td>
+                            <td>
+                                <input type="text" id='shipping_country' class="address p-1 rounded-md border-[#10393b40] border"
+                                    name="add[shipping_country]">
+                            </td>
+                        </tr>
+
+
+
+                    </table><br>
+
+
+
+                    <button type="submit"
+                        class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal End-->
+
+
+        <div class="bg-white rounded-md w-1/4 p-2 pt-4 shadow-md sticky top-2 h-56 px-4">
+            <b class="text-xl underline">Order Summary</b>
+
+            <div class="mt-7">
+            <table class="w-full">
+                <tr>
+                    <td>Items</td>
+                    <td class="flex justify-end"><?php echo $qty; ?></td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td class="flex justify-end">₹<?php echo $quoteModel->getGrandTotal(); ?></td>
+                </tr>
+                <tr>
+                    <td>Shipping</td>
+                    <td class="flex justify-end">Free</td>
+                </tr>
+                <tr>
+                    <td colspan=2><hr class="border-black w-full mt-3"></td>
+                </tr>
+                <tr>
+                    <td>Order Total</td>
+                    <td class="flex justify-end">₹<?php echo $quoteModel->getGrandTotal(); ?> </td>
+                    
+                </tr>
+                
+            </table>
+        
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    const openAddAddressFormButton = document.getElementById('openAddAddressForm');
+    const closeAddressFormButton = document.getElementById('closeAddressForm');
+    const addressFormModal = document.getElementById('addressFormModal');
+    
+    openAddAddressFormButton.addEventListener('click', () => {
+        addressFormModal.classList.remove('hidden');
+    });
+
+    closeAddressFormButton.addEventListener('click', () => {
+        addressFormModal.classList.add('hidden');
+    });
+
+    
+
+
+
+function copyBillingToShipping() {
+        if (document.getElementById('same_as_billing').checked) {
+            document.getElementById('shipping_address').value = document.getElementById('billing_address').value;
+            document.getElementById('shipping_city').value = document.getElementById('billing_city').value;
+            document.getElementById('shipping_region').value = document.getElementById('billing_region').value;
+            document.getElementById('shipping_country').value = document.getElementById('billing_country').value;
+            document.getElementById('shipping_phone').value = document.getElementById('billing_phone').value;
+            document.getElementById('shipping_postcode').value = document.getElementById('billing_postcode').value;
+        } else {
+            // Clear shipping fields if checkbox is unchecked
+            document.getElementById('shipping_address').value = '';
+            document.getElementById('shipping_city').value = '';
+            document.getElementById('shipping_region').value = '';
+            document.getElementById('shipping_country').value = '';
+            document.getElementById('shipping_phone').value = '';
+            document.getElementById('shipping_postcode').value = '';
+        }
+    }
+
+    
+$(document).ready(function () {
+    <?php foreach ($addressModel as $address): ?>
+                var id = <?php echo $address->getAddressId(); ?>;
+                $('#addresslist<?php echo $address->getAddressId(); ?>').on('click', function () {
+                    var _data = JSON.parse($(this).attr('data-json'));
+                    for (var key in _data) {
+                        if (_data.hasOwnProperty(key)) {
+                            $('#' + key).val(_data[key]);
+                        }
+                    }
+                });
+
+            const openAddressFormButton<?php echo $address->getAddressId(); ?> = document.getElementById('openAddressForm<?php echo $address->getAddressId(); ?>');
+    
+            openAddressFormButton<?php echo $address->getAddressId(); ?>.addEventListener('click', () => {
+                addressFormModal.classList.remove('hidden');
+            });
+
+    <?php endforeach; ?>
+
+    $('#openAddAddressForm').on('click', function () {
+        $('.address').val('');
+    });
+
+
+
+    $('#payment_method').on('change', function() {
+            var selectedPayment = $(this).val();
+            if(selectedPayment === 'Credit Card') {
+
+                $('#credit_card_form').removeClass('hidden');
+                $('#phone_order_info').addClass('hidden');
+
+            } else if(selectedPayment === 'Phone Order') {
+                $('#credit_card_form').addClass('hidden');
+                $('#phone_order_info').removeClass('hidden');
+
+            } else {
+                
+                $('#credit_card_form').addClass('hidden');
+                $('#phone_order_info').addClass('hidden');
+            }
+        });
+});
+
+            
+</script>

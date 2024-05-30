@@ -1,0 +1,13 @@
+body {
+  background-color: #f2ebe5;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+.content {
+    min-height: 80vh;
+}
+

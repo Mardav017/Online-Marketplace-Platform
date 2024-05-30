@@ -1,0 +1,93 @@
+<?php $salesOrder = $this->getOrder(); ?>
+<?php $orderItem = $this->getOrderItem(); ?>
+<?php $status = $this->getStatus();?>
+
+<section class="bg-white m-3 rounded-md p-2">
+    <h1 class="text-2xl text-center my-5">Orders</h1>
+
+    
+    <table>
+        <tr>
+            <th class="w-1/6 py-4 px-8 border-gray-700 font-semibold text-center">Order ID</th>
+            <th class="w-1/6 py-4 px-8 font-semibold text-center">Order Number</th>
+            <th class="py-4 px-8 w-3/6 font-semibold text-center">Order Details</th>
+            <th class="py-4 w-1/2 px-8 font-semibold text-center">Grand Total</th>
+            <th class="py-4 px-8 font-semibold text-center">Status</th>
+            <th class="py-4 px-8 font-semibold text-center">Update</th>
+            <th class="py-4 px-8 font-semibold text-center">Edit</th>
+        </tr>
+
+        <?php foreach ($salesOrder as $order): ?>
+                <tr>
+                    <td><?php echo $order->getOrderId() ?></td>
+                    <td><?php echo $order->getOrderNumber() ?></td>
+            
+                    <td>        
+                    
+                
+                    </td>
+            
+                    <td><?php echo $order->getGrandTotal() ?></td>
+                    <td>
+                        <select name="status" class="status p-1">
+                        <?php foreach($status as $st): ?>
+                            <option value="<?php echo $st ?>" <?php echo ($order->getStatus() == $st) ? 'selected' : ''; ?>><?php echo $st ?></option>
+                        <?php endforeach?>
+                            
+                        </select>
+
+                
+                    </td>
+                    <td>
+                        <button type="button" class='update'><span class="material-symbols-outlined">update</span></button>
+                    </td>
+
+                    <td>
+                        <button type="button">
+                            <a href="<?php echo $this->getUrl('admin/sales/view').'?id='.$order->getOrderId() ?>"><span class="material-symbols-outlined">edit</span></a>
+                        </button>
+                    </td>
+
+                </tr>
+        <?php endforeach ?>
+        
+    </table>
+    
+</section>
+
+
+<script>
+    $(document).ready(function () {
+        $('.update').on('click', function () {
+        let statusField = $(this).closest('tr').find('.status');
+        let status = statusField.val();
+
+        let orderId = $(this).closest('tr').find('td:eq(0)').text();
+        let preStatus = '<?php echo $order->getStatus()?>';
+        updateStatus(orderId, status,preStatus);
+        });
+
+        function updateStatus(id,value,preStatus) {
+            $.ajax({
+                url:"<?php echo $this->getUrl('admin/sales/updateStatus'); ?>",
+                type: "POST",
+                data: {
+                    order_id: id,
+                    status: value,
+                    from_status:preStatus
+                },
+                success: function(response) {
+                    console.log("success");
+                    window.location.reload();
+
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+            
+        }
+
+
+    });
+</script>

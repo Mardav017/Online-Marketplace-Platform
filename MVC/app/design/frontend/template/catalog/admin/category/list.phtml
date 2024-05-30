@@ -1,0 +1,50 @@
+
+<?php
+$categoryCollection = Mage::getModel('catalog/category')->getCollection();
+
+
+// print_r($product);
+
+// echo get_class($categoryCollection); 
+
+
+?>
+
+
+
+<div align="center" class="table mx-20" >
+    <table align="center" border="1px solid black" class=" bg-[#fff] border-[#f2ebe5] rounded-md shadow-md">
+        <tr>
+            <th>Id</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+
+        <?php foreach ($categoryCollection->getData() as $categoryModel): ?>
+            
+                <tr>
+                    <td>
+                        <?php print_r($categoryModel->getCategoryId());
+                        ?>
+                    </td>
+                    <td>
+                        <?php print_r($categoryModel->getCategoryName()); ?>
+                    </td>           
+        
+                    <td>
+                        <?php print_r($categoryModel->getStatus()); ?>
+                    </td>
+
+                    <td>
+                        <a href="./form?id=<?php print_r($categoryModel->getCategoryId()); ?>"><button type='button'><span class="material-symbols-outlined">edit</span></button></a>
+                    </td>
+                    <td>
+                    <a href="./delete?id=<?php print_r($categoryModel->getCategoryId()); ?>"><button type='button'><span class="material-symbols-outlined">delete</span></button></a>
+
+                    </td>
+                </tr>
+        <?php endforeach; ?>
+    </table>
+</div>

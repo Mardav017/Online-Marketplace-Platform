@@ -1,0 +1,36 @@
+.input,.select,.textarea{
+    width: 100%;
+}
+
+input,textarea,select{
+    background-color:#f2ebe5;    
+}
+/* 
+td{
+    padding: 6px 50px 6px 50px;
+} */
+
+/* 
+h1{
+    font-size: 25px;
+} */
+
+.list-table{
+    margin: 0 auto;
+    padding: 0 auto;
+
+}
+
+table{
+    background-color: #ffffff;
+}
+
+body{
+    background-color: #f2ebe5;
+}
+
+.logo{
+    background-color: #fff;
+    /* mix-blend-mode: screen; */
+}
+

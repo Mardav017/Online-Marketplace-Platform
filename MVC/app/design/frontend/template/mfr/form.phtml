@@ -1,0 +1,59 @@
+<?php $mfrModel = $this->getMfrModel();?>
+
+
+
+<div align='center' class="bg-white mx-96 p-5 rounded-md">
+    
+        <label>Name: </label>
+        
+        <select class='mfr p-2 my-4' name="mfr_name">
+            <option value="0" hidden>Select Option</option>
+
+            <?php foreach ($mfrModel as $mfr): ?>
+                <option value="<?php echo $mfr->getId() ?>"><?php echo $mfr->getName() ?></option>
+            <?php endforeach ?>
+
+        </select><br>
+
+                  
+    
+        <label>State: </label>
+            
+        <select class='state p-2' name="mfr_name">
+            <option value="0">Select Option</option>
+        </select>
+           
+    
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $('.mfr').on('change', function () {
+            let id = $(this).val();
+            $.ajax({
+                url: "<?php echo $this->getUrl('Mfr/Mfr/state') ?>",
+                method: 'POST',
+                data: {id: id},
+                success: function(response) {
+                    console.log(response);
+                    let element = JSON.parse(response);
+                    $('.state').html('<option value="0">Select Option</option>');
+                    
+                    for (let i = 0; i < element.length; i++) {
+                        $('.state').append("<option value="+ element[i] +">"+element[i]+"</option>");
+                        
+                    }
+
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });                        
+        });
+
+
+
+    });
+</script>

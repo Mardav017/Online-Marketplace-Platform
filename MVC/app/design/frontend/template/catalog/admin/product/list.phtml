@@ -1,0 +1,59 @@
+
+<?php $productCollection = Mage::getModel('catalog/product')->getCollection();  ?>
+
+
+
+<div align="center" class="table mx-44" >
+    <table align="center" border="1px solid black" class=" bg-[#fff] border-[#f2ebe5] rounded-md shadow-md">
+        <tr>
+            <th>Id</th>
+            <th>SKU</th>
+            <th>Name</th>
+        
+            <th>Category ID</th>
+            <th>Price</th>
+            
+            <th>Status</th>
+            <th>Edit</th>
+            <th>Delete</th>
+
+        </tr>
+
+        <?php foreach ($productCollection->getData() as $productModel): ?>
+            
+                <tr>
+                    <td>
+                        <?php print_r($productModel->getProductId());
+                        ?>
+                    </td>
+                    <td>
+                        <?php print_r($productModel->getSku()); ?>
+                    </td>
+                    <td>
+                        <?php print_r($productModel->getName()); ?>
+                    </td>
+            
+                    <td>
+                        <?php print_r($productModel->getCategoryId()); ?>
+                    </td>
+                    <td>
+                        <?php print_r($productModel->getPrice()); ?>
+                    </td>
+            
+        
+                    <td>
+                        <!-- <?php print_r($productModel->getStatus() == '0' ? 'Disable' : 'Enable'); ?> -->
+                        <?php print_r($productModel->getStatus()); ?>
+                    </td>
+
+                    <td>
+                        <a href="./form?id=<?php print_r($productModel->getProductId()); ?>"><button type='button'><span class="material-symbols-outlined">edit</span></button></a>
+                    </td>
+                    <td>
+                    <a href="./delete?id=<?php print_r($productModel->getProductId()); ?>"><button type='button'><span class="material-symbols-outlined">delete</span></button></a>
+
+                    </td>
+                </tr>
+        <?php endforeach; ?>
+    </table>
+</div>

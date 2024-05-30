@@ -1,0 +1,84 @@
+<div class='fixed left-1/3 top-1/4'>
+
+    <form action="<?php echo $this->getUrl('admin/account/login'); ?>" method="post"  id='admin-login'>
+        <table align="center" class="rounded-xl shadow-md ">
+            <tr>
+                <th colspan=2>
+                    <h1 class="m-3 text-xl">ADMIN LOGIN</h1>
+                </th>
+            </tr>
+
+
+            
+            <tr>
+                <td >
+                    <label for="username">Username</label>
+                </td>
+                <td>
+                    <input class="input rounded-sm shadow-sm border-[#f2ebe5]" id="username" type="text" name="adminlogin[username]" required><br>
+                    
+                </td>
+            </tr>
+            <tr class="my-2">
+                <td class="">
+                    <label for="password">Password</label>
+                </td>
+                <td>
+                    <input class="input rounded-sm shadow-sm border-[#f2ebe5]" id="password" type="password" name="adminlogin[password]" required>
+                    
+                </td>
+            </tr>
+
+
+            <tr>
+                <td colspan=2 align=center>
+                <span id="message" class="text-xs"></span>
+                
+                </td>            
+                
+            </tr>
+            <tr>
+                <th colspan=2>
+                    <input class="bg-gray-600 p-1 rounded-md text-white m-3 cursor-pointer" type="submit" value="Login"/>
+                
+                </th>            
+                
+            </tr>
+            
+        </table>
+    </form>
+</div>
+
+<script>
+    $('#admin-login').submit(function (e) {
+        e.preventDefault();
+        var form = $($('#admin-login')[0]);
+
+        $.ajax({
+            url: form.action,
+            type: 'POST',
+            data: form.serialize()
+        })
+        .done(function(response) {
+            console.log(response);
+            var output = JSON.parse(response);
+            // console.log(output);
+            $('#message')[0].innerHTML = output.message;
+            $('#message').fadeIn();
+            setTimeout(function() {
+                $('#message').fadeOut();
+            }, 3000);
+
+
+            // console.log(output.message);
+
+            if (output.type === 'success') {
+                // Redirect to the dashboard or perform other actions on successful login
+                window.location.href = '<?php echo $this->getUrl('admin/account/dashboard'); ?>';
+            }
+        })
+        .fail(function() {
+            $('#message')[0].innerHTML = 'An error occurred during the login process.';
+        });
+    });
+</script>

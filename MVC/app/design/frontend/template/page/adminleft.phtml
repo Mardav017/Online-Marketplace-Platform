@@ -1,0 +1,114 @@
+<section class="left-section sticky top-0">
+    
+    <div class='bg-white h-dvh'>
+
+        <img class="logo m-1 mx-16" src="<?php echo $this->getUrl('skin/images/logo.png')?>" alt="logo" height="65" width="75">
+
+        <div class="py-2 flex px-7 align-middle">
+            <span class="material-symbols-outlined pt-1 text-blue-800">person</span>
+            <h1 class='font-[calibri] font-semibold'> ADMIN</h1>
+        </div>
+        
+        <div class='py-5'>
+            <h1 class='mb-6 px-5 text-blue-800 text-sm font-bold underline'>Menu</h1>
+    
+            <a href="<?php echo $this->getUrl("admin/account/dashboard") ?>">
+                <button id='account' type="button" class='p-2 text-[#425dbd] w-full hover:bg-[#30448c] hover:text-white'>Dashboard</button>
+            </a>
+
+
+            <select id='catalog_product' class='navigation pl-5 p-2 text-[#425dbd] w-full bg-white text-center hover:bg-[#30448c] hover:text-white' name="product" id="product">
+                <option value="0" hidden>Products</option>
+                <option value="<?php echo $this->getUrl("admin/catalog_product/list") ?>">
+                    Products List
+                </option>
+                <option value="<?php echo $this->getUrl("admin/catalog_product/form") ?>">
+                    Edit Product
+                </option>
+            </select>
+
+            <select id='catalog_category' class='navigation pl-5 p-2 text-[#425dbd] w-full bg-white text-center hover:bg-[#30448c] hover:text-white' name="category" id="category">
+                <option value="0" hidden>Category</option>
+                <option value="<?php echo $this->getUrl("admin/catalog_category/list") ?>">Category List
+                </option>
+                <option value="<?php echo $this->getUrl("admin/catalog_category/form") ?>">
+                    Edit Category
+                </option>
+            </select>
+
+            <select id='banner' class='navigation pl-5 p-2 text-[#425dbd] w-full bg-white text-center hover:bg-[#30448c] hover:text-white' name="banner" id="banner">
+                <option value="0" hidden>Banner</option>
+                <option value="<?php echo $this->getUrl("admin/banner/list") ?>">Banner List</option>
+                <option value="<?php echo $this->getUrl("admin/banner/form") ?>">
+                    Edit Banner
+                </option>
+            </select>
+            
+            <a href="<?php echo $this->getUrl("admin/sales/order") ?>">
+                <button id='sales' type="button" class='p-2 text-[#425dbd] w-full  hover:bg-[#30448c] hover:text-white'>
+                    Orders
+                </button>
+            </a>
+
+            <a href="<?php echo $this->getUrl("admin/import/form") ?>">
+                <button id='import' type="button" class='p-2 text-[#425dbd] w-full  hover:bg-[#30448c] hover:text-white'>
+                    Import
+                </button>
+            </a>
+
+            
+    
+        </div>
+
+        
+
+        <a href="<?php echo $this->getUrl("admin/account/logout") ?>">
+            <button class='relative top-20 w-full bg-red-600 hover:bg-red-900 text-white p-2' type="button">            
+            Log Out
+            </button>
+        </a>
+
+
+        <a class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+            data-twe-collapse-init data-twe-ripple-init data-twe-ripple-color="light" href="#collapseExample" role="button"
+            aria-expanded="false" aria-controls="collapseExample">
+            Link with href
+        </a>
+        <button
+            class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+            type="button" data-twe-collapse-init data-twe-ripple-init data-twe-ripple-color="light"
+            data-twe-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Button with data-twe-target
+        </button>
+
+        <div class="!visible hidden text-center" id="collapseExample" data-twe-collapse-item>
+            Some placeholder content for the collapse component. This panel is
+            hidden by default but revealed when the user activates the relevant
+            trigger.
+        </div>
+
+
+    </div>
+    
+</section>
+
+
+<script>
+
+    $(document).ready(function () {
+        let controller = '<?php echo $this->getRequest()->getControllerName()?>';
+        console.log('#' + controller);
+        
+        $('#' + controller).css("background-color", "#425dbd");
+        $('#' + controller).css("color", "white");
+        $('#' + controller).css("text-decoration", "underline");
+
+        $('.navigation').change(function() {
+            var url = $(this).val();
+            if (url) {
+                window.location.href = url;
+            }
+        });
+
+    });
+</script>

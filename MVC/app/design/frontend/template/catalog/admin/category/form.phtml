@@ -1,0 +1,49 @@
+<?php
+    $data = $this->getCategory();
+    
+    // $session = Mage::getSingleton('core/session')->get('customer_id');
+    
+    
+    ?>
+<form action="<?php echo $this->getUrl("Admin/Catalog_Category/save") ?>" method="post">
+        <table align="center" class="rounded-xl shadow-md">
+            <tr>
+                <th colspan=2>
+                    <h1 class="m-3">Category Form</h1>
+                </th>
+            </tr>
+
+            <input class="input" type="hidden" name="cdata[category_id]" value="<?php echo $data->getCategoryId(); ?>">
+
+            <tr>
+                <td class="">
+                    <label for="category_name">Category Name</label>
+                </td>
+                <td>
+                    <input class="input rounded-sm shadow-sm border-[#f2ebe5]" type="text" name="cdata[category_name]"
+                        value="<?php echo $data->getCategoryName(); ?>">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Status
+                </td>
+                <td>
+                
+                    <select class="select p-1" name="cdata[status]">
+                        <option value="select_status" hidden>Select Status</option>
+                        <option value="1"  <?php echo $data->getStatus() == 'E' ? " selected " : ""; ?>>Enable</option>
+                        <option value="0"  <?php echo $data->getStatus() == 'D' ? " selected " : ""; ?>>Disable</option>
+                    </select>
+                </td>
+            </tr><br>
+
+
+            <tr>
+                <th colspan=2>
+                    <input class="bg-gray-600 p-1 rounded-md text-white m-3 cursor-pointer" type="submit" value="Submit" />
+                </th>
+            </tr>
+        </table>
+    </form>

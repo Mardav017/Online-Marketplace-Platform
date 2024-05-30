@@ -1,0 +1,114 @@
+<section>
+    <h1 class='text-center text-xl'>Import File(CSV) to Database</h1>
+    
+    
+        <table align='center' class='border-2 rounded-md'>
+            <tr>
+                <th>
+                    <label for="file">File :</label>
+                </th>
+                <td>
+                    <input type="file" class="file" accept=".csv">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Upload:
+                </th>
+                <td>
+                    <button type='button' class='upload bg-zinc-500 hover:bg-zinc-900 text-white p-1 rounded-md' type="button">Upload</button>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Read:
+                </th>
+                <td>
+                    <button type='button' class='read bg-purple-500 hover:bg-purple-900 text-white p-1 rounded-md' type="button">Read</button>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Import:
+                </th>
+                <td>
+                    <button type='button' class='import bg-green-500 hover:bg-green-900 text-white p-1 rounded-md' type="button">Import</button>
+                </td>
+            </tr>
+        </table>
+    
+
+</section>
+
+
+<script>
+
+    $(document).ready(function () {
+        $('.upload').on('click', function(){
+            let fileField = $(this).closest('table').find('.file');
+            let file = fileField[0].files[0];
+
+            let formData = new FormData();
+            formData.append('file', file);
+            console.log(formData);
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo $this->getUrl('admin/import/upload') ?>",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    console.log(response); 
+                    window.alert('File Uploaded Successfully');
+                },
+                error: function(xhr, status, error) {
+                    // Handle error
+                    console.error(xhr.responseText);
+                    window.alert(xhr.responseText);
+                }
+            });
+        });
+
+
+        $('.read').on('click',function(){
+            let fileField = $(this).closest('table').find('.file');
+            let fileName = fileField.val();
+
+            fileName = fileName.replace(/^.*[\\\/]/, '');
+
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo $this->getUrl('admin/import/read') ?>",
+                data: { fileName: fileName }, // Pass file name as post data
+                success: function (response) {
+                    console.log(response);
+                    window.alert('File Read Done');
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    window.alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('.import').on('click', function () {
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo $this->getUrl('admin/import/import') ?>",
+                success: function (response) {
+                    console.log(response);
+                    window.alert('Import Successfully Done!');                  
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    window.alert(xhr.responseText);
+                }
+            });
+            
+        });
+
+    });
+</script>

@@ -1,0 +1,33 @@
+<div class="dashboard_content">
+<?php
+
+$custId = Mage::getSingleton('core/session')->get('customer_id');
+// echo "<script>console.log($custId)</script>";
+
+
+$custData = Mage::getModel('customer/customer')->getCollection()
+    ->addFieldToFilter(['customer_id'=> ['eq'=>$custId]])
+    ->getData()[0];
+
+
+
+?>
+
+<table align="center" class="rounded-md border-[#e3fcf9] shadow-md">
+    
+    <tr>
+        <th>Customer ID: </th>
+        <td><?php print_r($custId); ?></td>
+    </tr>
+    <tr>
+        <th>Name: </th>
+        <td><?php echo ucwords($custData->getFirstName()." ". $custData->getLastName()); ?></td>
+    </tr>
+    <tr>
+        <th>Email: </th>
+        <td><?php echo $custData->getCustomerEmail(); ?></td>
+    </tr>
+    
+        
+</table>
+</div>

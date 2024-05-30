@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <?php $this->getChildHtml('head') ?>   
+
+</head>
+<body>
+    <div class="container">
+        
+        <div class="content flex">
+            
+            <div class="left w-[20%] sticky top-2">
+                <?php $this->getChildHtml('adminleft') ?>
+            </div>
+
+            <div class="right w-full">
+                <?php $this->getChildHtml('content') ?>
+            </div>
+            
+        </div>
+
+        
+
+    </div>
+</body>
+</html>

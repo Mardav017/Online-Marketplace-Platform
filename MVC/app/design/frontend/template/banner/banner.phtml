@@ -1,0 +1,85 @@
+<?php $bannerCollection = $this->getBanner();?>
+<?php $productModel = $this->getProduct();?>
+
+<div class="slider">
+    <div class="slides">
+        
+    <?php foreach ($bannerCollection as $banner): ?>
+        <div class="slide">
+            <img class="h-72 w-full" src="<?php echo ($this->getUrl('media/banner/') . $banner->getBannerImage()); ?>">
+        </div>
+    <?php endforeach ?>
+    
+    </div>
+    
+    <div class="prev">&#10094;</div>
+    <div class="next">&#10095;</div>
+</div>
+
+
+<div class="m-2">
+    <h1 class='text-2xl p-2 underline text-center'>Best Seller</h1>
+    <div class="flex mx-14 mt-10 flex-wrap gap-4">
+        <?php foreach($productModel->getData() as $product): ?>
+            <a class='group transition duration-300 hover:scale-110 hover:shadow-2xl border-2 rounded-md' href="<?php echo ($this->getUrl('catalog/product/view/')."?id=". $product->getProductId()) ?>">
+                <div class="bg-white w-52 h-72 rounded-md overflow-hidden">
+                    <img class='transition duration-500 group-hover:scale-110' src="<?php echo ($this->getUrl('media/catalog/product/') . $product->getImageLink()) ?>"  class="bg-black w-72 h-4/5 rounded-md border-2">
+                    <div class='relative bg-white  p-2 pt-4'>
+                        <p class=" truncate"><?php print_r($product->getName()) ?></p>
+                        <p>₹ <?php print_r($product->getPrice()) ?></p>
+                    </div>
+                </div>
+            </a>
+        <?php endforeach ?>
+        
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const slides = document.querySelector('.slides');
+        const slideWidth = document.querySelector('.slide').clientWidth;
+        let currentIndex = 0;
+
+        function showSlide(index) {
+            slides.style.transition = 'transform 0.5s ease-in-out';
+            slides.style.transform = 'translateX(' + (-slideWidth * index) + 'px)';
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % slides.children.length;
+            showSlide(currentIndex);
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + slides.children.length) % slides.children.length;
+            showSlide(currentIndex);
+        }
+
+        function resetTransition() {
+            if (currentIndex === slides.children.length - 1) {
+                // Reset transition after reaching the last slide
+                setTimeout(() => {
+                    slides.style.transition = 'none';
+                    currentIndex = 0;
+                    showSlide(currentIndex);
+                }, 8000); // Adjust the timeout to match your transition duration
+            }
+        }
+
+        setInterval(() => {
+            nextSlide();
+            resetTransition();
+        }, 6000);
+
+        document.querySelector('.prev').addEventListener('click', () => {
+            prevSlide();
+            resetTransition();
+        });
+
+        document.querySelector('.next').addEventListener('click', () => {
+            nextSlide();
+            resetTransition();
+        });
+    });
+</script>

@@ -1,0 +1,25 @@
+table,tr,td,th{
+    /* border: 1px solid rgb(55 65 81); */
+    margin: 20px;
+}
+
+th{
+    background-color: rgba(128, 128, 128, 0.375);
+    padding: 10px;
+    text-align: center;
+    border: 1px double black;
+    /* border-style:; */
+}
+
+td{
+    padding: 8px;
+    font-weight: normal;
+}
+
+table.order td{
+    padding: 8px;
+    font-weight: normal;
+    border: 2px solid rgba(128, 128, 128, 0.375);
+    border-top: none;
+}
+

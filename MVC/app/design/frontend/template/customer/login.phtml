@@ -1,0 +1,58 @@
+<table align="center" class="rounded-xl shadow-md">
+    <form action="<?php echo $this->getUrl('customer/account/login') ?>" method="POST">
+        <tr>
+            <th colspan=2>
+                <h1 class="m-3 text-xl">LOGIN FORM</h1>
+            </th>
+        </tr>
+
+        
+
+        <tr>
+            <td class="">
+                <label for="customer_email">Email Id</label>
+            </td>
+            <td>
+                <input class="input rounded-sm shadow-sm border-[#f2ebe5]" type="email" name="custlogin[customer_email]" required>
+            </td>
+        </tr>
+
+        
+        <tr>
+            <td class="">
+                <label for="password">Password</label>
+            </td>
+            <td>
+                <input class="input rounded-sm shadow-sm border-[#f2ebe5]" type="password" name="custlogin[password]" required>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan=2 align=center>
+            <span id="message" class="text-xs"></span>
+              
+            </td>            
+            
+        </tr>
+
+        <tr>
+            <th colspan=2>
+                <input class="bg-green-600 w-[78%] p-1 rounded-md text-white m-3 cursor-pointer hover:bg-green-800" type="submit" value="Login"/>
+            </th>
+        </tr>
+        <tr>
+            <th colspan=2 class="">
+                <a href="<?php echo $this->getUrl('customer/account/forgotpassword') ?>" class="text-blue-700 pointer-event">Forgot Password ?<a/>
+            </th>
+        </tr>
+        
+        <tr>
+            <th colspan=2>
+            New User?<a href="<?php echo $this->getUrl('Customer/Account/register') ?>"><button class=" rounded-md text-blue-700 m-3 cursor-pointer" type="button">Register</button></a>
+            </th>
+        </tr>
+    </form>
+
+    
+
+</table>

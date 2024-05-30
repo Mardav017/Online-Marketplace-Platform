@@ -1,0 +1,74 @@
+<?php
+$bannerData = $this->getBanner();
+
+
+// echo "<pre>";
+// print_r($bannerData);
+
+
+?>
+<form action="<?php echo $this->getUrl("Admin/Banner/save") ?>" method="post" enctype="multipart/form-data">
+    <table align="center" class="rounded-xl shadow-md">
+        <tr>
+            <th colspan=2>
+                <h1 class="m-3 text-xl">Banner Form</h1>
+            </th>
+        </tr>
+
+        <input class="input" type="hidden" name="bdata[banner_id]" value="<?php echo $bannerData->getBannerId() ?>">
+
+        <tr>
+            <td class="">
+                <label for="banner_title">Banner Title</label>
+            </td>
+            <td>
+                <input class="input rounded-sm shadow-sm border-[#f2ebe5]" type="text" name="bdata[banner_title]" value="<?php echo $bannerData->getBannerTitle() ?>">
+            </td>
+        </tr>
+        <tr>
+            <td>   
+                <label>Banner Image</label>
+            </td>
+            <td class="">
+                <input class="input bg-white rounded-sm border-[#f2ebe5]" type="file" name="bdata[banner_image]" value="<?php echo $bannerData->getBannerImage(); ?>" required>
+                <?php
+                        if ($bannerData->getBannerImage()) {
+
+                            echo "
+                            <img src=" . ($this->getUrl('media/banner/') . $bannerData->getBannerImage()) . " width=200 height=60 class='border-black border-2'>
+                            ";
+
+                        } ?>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Status
+            </td>
+            <td>
+                <select class="select p-1"  name="bdata[status]">
+                    <option value="select_status" disabled>Select Status</option>
+                    <option value="1" <?php echo (($bannerData->getStatus() == 1) ? "selected" : "") ?>>Enable</option>
+                    <option value="0" <?php echo (($bannerData->getStatus() == 0) ? "selected" : "") ?>>Disable</option>
+                </select>
+            </td>
+        </tr><br>
+
+        <tr>
+            <td><label>Show On</label></td>
+            <td>
+                
+            <input class="input rounded-sm shadow-sm border-[#f2ebe5]" type="text" name="bdata[show_on]"
+            value="<?php echo $bannerData->getShowOn() ?>">
+            </td>
+        </tr>
+
+
+        <tr>
+            <th colspan=2>
+                <input class="bg-gray-600 p-1 rounded-md text-white m-3 cursor-pointer" type="submit" value="Submit" />
+            </th>
+        </tr>
+    </table>
+</form>

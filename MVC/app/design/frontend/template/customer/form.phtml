@@ -1,0 +1,76 @@
+<table align="center" class="rounded-xl shadow-md">
+    <form action="<?php echo $this->getUrl("Customer/Account/save") ?>" method="post">
+        <tr>
+            <th colspan=2>
+                <h1 class="m-3 text-xl">REGISTRATION FORM</h1>
+            </th>
+        </tr>
+
+        <input class="input" type="hidden" name="custdata[customer_id]">
+
+        <tr>
+            <td class="">
+                <label for="customer_email">Email Id</label>
+            </td>
+            <td>
+                <input class="input rounded-sm shadow-sm border-[#f2ebe5]" type="email" name="custdata[customer_email]">
+            </td>
+        </tr>
+        <tr>
+            <td class="">
+                <label for="first_name">First Name</label>
+            </td>
+            <td>
+                <input class="input rounded-sm shadow-sm border-[#f2ebe5]" type="text" name="custdata[first_name]"
+                    required>
+            </td>
+        </tr>
+        <tr>
+            <td class="">
+                <label for="last_name">Last Name</label>
+            </td>
+            <td>
+                <input class="input rounded-sm shadow-sm border-[#f2ebe5]" type="text" name="custdata[last_name]"
+                    required>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td class="">
+                <label for="password">Password</label>
+            </td>
+            <td>
+                <input class="input rounded-sm shadow-sm border-[#f2ebe5]" type="password" name="custdata[password]"
+                    required>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="">
+                <label for="password">Confirm Password</label>
+            </td>
+            <td>
+                <input class="input rounded-sm shadow-sm border-[#f2ebe5]" type="password" name="custdata[confirm_password]" required>
+            </td>
+        </tr>
+
+
+
+
+        <tr>
+            <th colspan=2>
+                <input class="bg-green-600 hover:bg-green-700 p-1 w-[81%] rounded-md text-white m-3 cursor-pointer" type="submit" value="Register" />
+            </th>
+        </tr>
+
+    </form>
+    <tr>
+        <th colspan=2>
+            Already Registered? <a href="./login"><button type='button'
+                    class="bg-[#7638cd] hover:bg-[#5d2da1] p-1 rounded-md text-white">LogIn</button></a>
+        </th>
+    </tr>
+
+
+</table>

@@ -1,0 +1,45 @@
+<?php $categoryModel = $this->getCategory(); ?>
+
+<Header class="flex justify-between px-2 m-3 rounded-lg shadow-md text-[#576861]">
+    <div>
+        <a href="<?php echo $this->getUrl('') ?>"><img class="logo m-1"
+                src="<?php echo $this->getUrl('skin/images/logo.png') ?>" alt="logo" height="55" width="55"></a>
+    </div>
+
+    <ul class="flex space-x-3 p-3">
+
+        <?php foreach ($categoryModel as $category): ?>
+            <li class='mt-px'><a
+                    href="<?php echo $this->getUrl('Catalog/Category/view') . '?id=' . $category->getCategoryId() ?>"><?php echo $category->getCategoryName() ?></a>
+            </li>
+        <?php endforeach ?>
+
+        <li>
+            <div class="flex border-[#f2ebe5] ml-4">
+                <?php $customerId = Mage::getSingleton('core/session')->get('customer_id'); ?>
+                <?php if ($customerId): ?>
+                    <?php $custName = Mage::getSingleton('customer/customer')->load($customerId)->getFirstName(); ?>
+                    <p class="font-bold text-blue-700">Hi <?php print_r(ucfirst($custName)); ?> !!</p>
+                <?php endif ?>
+                <!-- <input class="w-40 pl-2 rounded-s-md" type="text" placeholder="Search Items" >
+                <button type='button' class="bg-green-600 text-black p-1 rounded-e-md"><span class="material-symbols-outlined text-sm">search</span></button> -->
+            </div>
+        </li>
+
+        <li><button type='button'><a href="<?php echo $this->getUrl('sales/quote/view') ?>"><span
+                        class="material-symbols-outlined text-2xl mx-5">shopping_cart</span></a></button></li>
+
+        <?php if ($this->getCustomerId()): ?>
+
+            <button type='button'><a href="<?php echo $this->getUrl('customer/account/logout') ?>"
+                    class='bg-red-500 hover:bg-red-700 p-1 text-white rounded-md'>Logout</a></button>
+
+        <?php else: ?>
+
+            <button type='button'><a href="<?php echo $this->getUrl('customer/account/login') ?>"
+                    class='bg-red-500 hover:bg-red-700 p-1 text-white rounded-md'>Sign Up</a></button>
+
+        <?php endif ?>
+
+    </ul>
+</Header>

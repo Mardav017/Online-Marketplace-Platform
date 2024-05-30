@@ -1,0 +1,38 @@
+div.dashboard_content{
+    height: 500px;
+}
+
+body{
+    background-color: #f2ebe5;
+}
+
+.input,.select,.textarea{
+    width: 100%;
+}
+
+select{
+    background-color:#f2ebe5;    
+}
+
+td{
+    padding: 6px 50px 6px 50px;
+}
+
+
+h1{
+    font-size: 25px;
+}
+
+
+/* Hide the up and down arrows */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    /* Optional: Change other styles of the input field */
+    -moz-appearance: textfield; /* Firefox */
+    appearance: textfield; /* Chrome, Safari, Opera */
+}

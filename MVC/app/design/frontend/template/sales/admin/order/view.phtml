@@ -1,0 +1,216 @@
+<?php
+
+$order = $this->getOrderModel();
+$customer = $this->getCustomerModel();
+$itemModel = $this->getItemCollection();
+$shipping = $this->getShippingModel();
+$payment = $this->getPaymentModel();
+$status = $this->getStatus();
+$statusHistory = $this->getStatusHistory();
+
+$qty = 0;
+
+// echo "<pre>";
+// print_r($order->getPaymentId());
+// print_r(get_class_methods($payment));
+
+
+// $orders = Mage::getModel('sales/quote')->getCollection()->addLimitToFilter([3])->getData();
+
+// echo "<pre>";
+// print_r($history);
+
+
+?>
+
+<div class='flex mt-5 mx-3 h-fit'>
+    <section class="w-3/4 mx-2">
+
+        <div class='bg-white shadow-md p-2 rounded-md'>
+
+            <h1 class='text-xl font-semibold my-2 mx-5'>
+                Order Details<span class='text-gray-500 text-xl font-semibold my-2 mx-2'>#<?php echo $order->getOrderNumber() ?></span>
+            </h1>
+
+            <table class='order'>
+                <tr>
+                    <th class="w-3/6">
+                        Customer Details
+                    </th>
+                    <th class="h-2/5">
+                        Order Data                        
+                    </th>
+                    <th class="w-1/6">
+                        Additional Information  
+                    </th>
+                </tr>
+
+                <tr>
+                    <td>
+                        <b>Customer ID:</b> <?php echo $order->getCustomerId() ?><br>
+                        <b>Email:</b> <?php echo $customer->getEmail() ?><br>
+                        <b>Address:</b> <?php echo $customer->getShippingAddress() . ',' . $customer->getShippingCity() . ',' . $customer->getShippingPostcode() ?>
+                    </td>
+                    <td>
+                        Payment Method: <?php echo $payment->getPaymentMethod() ?><br>
+                        Payment Status: <?php echo ($payment->getPaymentMethod()=='Credit Card')?'Paid':'Unpaid' ?>
+                    </td>
+                    <td>
+                        Shipping(<?php echo $shipping->getShippingMethod() ?>)
+                    </td>
+                </tr>
+            </table>        
+        </div>
+
+
+        <div class='bg-white shadow-md p-2 mt-4 rounded-md'>
+            <h1 class='text-xl font-semibold my-2 mx-5'>Ordered Products</h1>
+            <table class='order'>
+                <tr>
+                    <th class="w-1/6">
+                        Product ID
+                    </th>
+                    <th class="w-11/12">
+                        Product
+                    </th>
+                    <th class="w-1/7">
+                        Quantity
+                    </th>
+                    <th class="w-1/7">
+                        Price
+                    </th>
+                    
+                </tr>
+                
+                <?php foreach ($itemModel->getData() as $item): ?>
+                        <tr>
+                            <td class='text-center'>
+                                <?php echo $item->getProductId() ?>
+                            </td>
+                            <td>
+                                <img src="" alt="">
+                                Product: <?php echo $item->getProductName() ?>
+                                Colour: <?php echo $item->getProductColor() ?>
+                            </td>
+                            <td class='text-center'>
+                                <?php echo $item->getQty() ?>
+                                <?php $qty += $item->getQty() ?>
+                            </td>
+                            <td class='text-center'>
+                                ₹<?php echo $item->getPrice() ?>
+                            </td>
+                        
+                        </tr>
+                <?php endforeach ?>
+            </table>        
+        </div>
+        
+    </section>
+
+    <section class="w-1/4 mx-2">
+
+        <div class="bg-white shadow-md p-2 rounded-md h-72">
+            <h1 class="font-semibold ml-2">Order Status</h1><br>
+
+            <table class='status'>
+            <tr>
+                <td>
+                    Status: 
+                </td>
+                <td>
+                    <select name="status" class="status p-1 border border-gray-700">
+                        <?php foreach($status as $st): ?>
+                            <option value="<?php echo $st ?>" <?php echo ($order->getStatus() == $st) ? 'selected' : ''; ?>><?php echo $st ?></option>
+                        <?php endforeach?>
+                            
+                    </select>
+                </td>
+                <td>
+                <button type="button" class='update'><span class="material-symbols-outlined">update</span></button>
+                </td>
+            </tr>    
+            </table>
+
+            <div class='border-2 h-36 text-clip overflow-scroll'>
+                <table class='history' style='margin: 0px,20px,0px,20px;'>
+                    <tr>
+                        <td colspan='3'>
+                            <u>Update History:</u>
+                        </td>                
+                    </tr>
+                
+                <?php foreach($statusHistory as $history):?>
+                <tr>
+                    <td colspan='3'>
+                        <ul>
+                            <li>On <b><?php echo $history->getDate() ?></b>:</li>
+                
+                            <li class='text-xs'><?php echo $history->getFromStatus()." Changed to " .$history->getToStatus().' by <b>'.$history->getActionBy().'</b>'?></li>
+                        </ul>
+                    </td>
+                </tr>
+                <?php endforeach ?>
+                                
+            </table>
+        </div>
+
+        </div>
+
+
+        <div class="bg-white shadow-md p-2 mt-4 rounded-md">
+            <h1 class="font-semibold ml-2">Order Summary</h1>
+            <table class="w-full text-sm">
+                        
+                <tr>
+                    <td>Items</td>
+                    <td class='text-center'><?php echo $qty ?></td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td class='text-center'>₹<?php echo $order->getGrandTotal() ?></td>
+                </tr>
+                
+            
+            </table>
+
+        </div>
+
+    </section>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('.update').on('click', function () {
+        let statusField = $(this).closest('tr').find('.status');
+        let status = statusField.val();
+
+        let orderId = <?php echo $this->getRequest()->getParams('id', 0)?>;
+        let preStatus = '<?php echo $order->getStatus()?>';
+        updateStatus(orderId, status,preStatus);
+        });
+
+        function updateStatus(id,value,preStatus) {
+            $.ajax({
+                url:"<?php echo $this->getUrl('admin/sales/updateStatus'); ?>",
+                type: "POST",
+                data: {
+                    order_id: id,
+                    status: value,
+                    from_status:preStatus
+                },
+                success: function(response) {
+                    console.log("success");
+                    window.location.reload();
+
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+            
+        }
+
+
+    });
+</script>

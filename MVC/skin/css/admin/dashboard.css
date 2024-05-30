@@ -1,0 +1,29 @@
+div.dashboard_content{
+    height: 500px;
+}
+
+body{
+    background-color: #f2ebe5;
+}
+
+.input,.select,.textarea{
+    width: 100%;
+}
+
+input,textarea,select{
+    background-color:#f2ebe5;    
+}
+
+td{
+    padding: 6px 50px 6px 50px;
+    text-align: center;
+}
+
+
+h1{
+    font-size: 25px;
+}
+
+table{
+    background-color: #ffffff;
+}

@@ -1,0 +1,207 @@
+<?php
+$data = $this->getProduct();
+$categoryCollection = Mage::getModel('catalog/category')->getCollection();
+// $session = Mage::getSingleton('core/session')->get('admin_id');
+
+
+
+
+?>
+
+    <form action="<?php echo $this->getUrl("Admin/Catalog_Product/save") ?>" method="post"  enctype="multipart/form-data">
+        <table align="center" class="rounded-xl shadow-md">
+            <tr>
+                <th colspan=2>
+                    <h1 class="m-3">Catalog Form</h1>
+                </th>
+            </tr>
+
+            <input class="input" type="hidden" name="pdata[product_id]" value="<?php echo $data->getProductId(); ?>">
+
+            <tr>
+                <td class="">
+                    <label for="sku">S.K.U. </label>
+                </td>
+                <td>
+                    <input class="input rounded-sm shadow-sm border-[#f2ebe5]" type="text" name="pdata[sku]"
+                        value="<?php echo $data->getSku(); ?>" required>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="name">Name </label>
+                </td>
+                <td>
+                    <input class="input rounded-sm shadow-sm border-[#f2ebe5]" type="text" name="pdata[name]"
+                        value="<?php echo $data->getName(); ?>" required>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="color">Color </label>
+                </td>
+                <td>
+                    <input class="input rounded-sm shadow-sm border-[#f2ebe5]" type="text" name="pdata[color]"
+                        value="<?php echo $data->getColor(); ?>" required>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="size">Size </label>
+                </td>
+                <td>
+                    <input class="input rounded-sm shadow-sm border-[#f2ebe5] p-1" type="text" name="pdata[size]"
+                        value="<?php echo $data->getSize(); ?>" required>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="description">Description </label>
+                </td>
+                <td>
+
+                    <textarea class="textarea rounded-sm shadow-sm p-1 resize-none" name="pdata[description]" cols="30"
+                        rows="3"><?php echo $data->getDescription(); ?></textarea>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="image_link">Image Link </label>
+                </td>
+                <td class = 'flex'>
+                    <input class="input p-1 text-sm bg-[#fff]" type="file" name="pdata[image_link]"
+                        value="<?php echo $data->getImageLink(); ?>"  required>
+                        <?php if ($data->getImageLink()): ?>
+
+                            <img src="<?php echo $this->getUrl('media/catalog/product/') . $data->getImageLink()?>" width=60 height=60 class='border-black border-2'>
+
+                        <?php endif ?>
+                    
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="link">Link </label>
+                </td>
+                <td>
+                    <input class="input p-1 text-sm bg-[#fff]" type="file" name="pdata[link]"
+                        value="<?php echo $data->getLink(); ?>">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="category_id">Category Id </label>
+                </td>
+                <td>
+
+                    <select name="pdata[category_id]" class="input rounded-sm shadow-sm border-[#f2ebe5] p-1">
+                        <option value="0" hidden>Select Category</option>
+                        <?php foreach ($categoryCollection->getData() as $categoryData): ?>
+                            <?php
+                            $categoryId = $categoryData->getCategoryId();
+                            $categoryName = $categoryData->getCategoryName();
+                            $selected = ($categoryId == $data->getCategoryId()) ? 'selected' : '';
+                            ?>
+
+                            <option value="<?php echo $categoryId ?>" <?php echo $selected ?>>
+                                <?php echo $categoryName ?>
+                            </option>
+
+                        <?php endforeach ?>
+                    </select>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="price">Price: </label>
+                </td>
+                <td>
+                    <input class="input rounded-sm shadow-sm border-[#f2ebe5] p-1" type="number" name="pdata[price]"
+                        value="<?php echo $data->getPrice(); ?>">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="mfr_cost">Manufacture Cost </label>
+
+                </td>
+                <td>
+                    <input class="input rounded-sm shadow-sm border-[#f2ebe5] p-1" type="number" name="pdata[mfr_cost]"
+                        value="<?php echo $data->getMfrCost(); ?>">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="shipping_cost">Shipping Cost </label>
+
+                </td>
+                <td>
+                    <input class="input rounded-sm shadow-sm border-[#f2ebe5] p-1" type="number"
+                        name="pdata[shipping_cost]" value="<?php echo $data->getShippingCost(); ?>">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="total_cost">Total Cost </label>
+                </td>
+                <td>
+                    <input class="input rounded-sm shadow-sm border-[#f2ebe5] p-1" type="number"
+                        name="pdata[total_cost]" value="<?php echo $data->getTotalCost(); ?>">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="margin_percentage">Margin Percentage </label>
+
+                </td>
+                <td>
+                    <input class="input rounded-sm shadow-sm border-[#f2ebe5] p-1" type="number"
+                        name="pdata[margin_percentage]" value="<?php echo $data->getMarginPercentage(); ?>">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="min_price">Min Price </label>
+                </td>
+                <td>
+                    <input class="input rounded-sm shadow-sm border-[#f2ebe5] p-1" type="number" name="pdata[min_price]"
+                        value="<?php echo $data->getMinPrice(); ?>">
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    Status
+                </td>
+                <td>
+                    <select class="select p-1">
+                        <option value="select_status" hidden>Select Status</option>
+                        <option value="1" <?php echo $data->getStatus() == 'E' ? "selected" : ""; ?>>Enable</option>
+                        <option value="0" <?php echo $data->getStatus() == 'D' ? "selected" : ""; ?>>Disable</option>
+                    </select>
+                </td>
+            </tr><br>
+
+
+            <tr>
+                <th colspan=2>
+                    <input class="bg-gray-600 p-1 rounded-md text-white m-3 cursor-pointer" type="submit" value="Submit" />
+                </th>
+            </tr>
+        </table>
+    </form>

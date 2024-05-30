@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <?php $this->getChildHtml('head') ?>   
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <?php $this->getChildHtml('header') ?>
+        </div>
+        
+        <div class="content flex m-3 border-2">
+            
+            <div class="left w-1/2 border-2" align='center'>
+                <?php $this->getChildHtml('left') ?>
+            </div>
+
+            <div class="right w-1/2 border-2" align='center'>
+                <?php $this->getChildHtml('right') ?>
+            </div>
+            
+        </div>
+
+        
+        <div class="footer">
+            <?php $this->getChildHtml('footer') ?>
+        </div>
+    </div>
+</body>
+</html>

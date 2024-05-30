@@ -1,0 +1,56 @@
+
+<?php
+$licenseCollection = Mage::getModel('license/license')->getCollection();
+
+?>
+
+
+
+<div align="center" class="table mx-40 " >
+    <table align="center" border="1px solid black">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+        
+            <th>State</th>
+            <th>License_type</th>
+            
+            <th>Total Rate</th>
+            
+            <th>Delete</th>
+
+        </tr>
+
+        <?php foreach ($licenseCollection->getData() as $license): ?>
+            
+                <tr>
+                    <td>
+                        <?php print_r($license->getId());
+                        ?>
+                    </td>
+                    
+                    <td>
+                        <?php print_r($license->getUserName()); ?>
+                    </td>
+            
+                    <td>
+                        <?php print_r($license->getState()); ?>
+                    </td>
+                    <td>
+                        <?php print_r($license->getLicenseType()); ?>
+                    </td>
+            
+        
+                    <td>
+                        <?php print_r($license->getTotalRate()); ?>
+                    </td>
+
+                    
+                    <td>
+                    <a href="./delete?id=<?php print_r($license->getId()); ?>"><button type='button'><span class="material-symbols-outlined">delete</span></button></a>
+
+                    </td>
+                </tr>
+        <?php endforeach; ?>
+    </table>
+</div>

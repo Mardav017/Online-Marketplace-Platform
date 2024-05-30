@@ -1,0 +1,166 @@
+<?php $itemModel = $this->getItemModel();?>
+<?php $quoteModel = $this->getQuoteModel();?>
+<?php $subTotal = 0;?>
+
+
+
+<?php if(!empty($itemModel)): ?>
+    <h1 class='text-center font-semibold text-2xl'>Cart</h1>
+    <table class="m-3 rounded-lg" style="width:98%;">
+        <?php foreach ($itemModel as $item): ?>
+
+            <!-- <?php
+                //  echo "<pre>";print_r(get_class_methods($item));echo "</pre>";
+                ?> -->
+            
+            
+                <tr class='h-48 bg-white border-8 border-[#f2ebe5]'>
+
+                    <td hidden><?php echo $item->getItemId(); ?></td>
+                    
+                    <td><a href="<?php echo $this->getUrl('catalog/product/view/')."?id=".$item->getProductId();  ?>"><img class="h-40 w-40 border-2" src="<?php echo ($this->getUrl('media/catalog/product/') . $item->getProduct()->getImageLink()) ?>" alt="<?php echo $item->getProduct()->getImageLink() ?>"></a></td>
+                    
+                    <td hidden><?php echo $item->getProductId() ;?></td>
+                    <td>
+                        <div class="mt-2">
+                            <h1 class="text-xl font-semibold w-52 text-ellipsis">
+                            <p class='text-ellipsis truncate'><?php echo $item->getProduct()->getName(); ?></p>
+                            </h1><br>
+                            <p>Color: <?php echo $item->getProduct()->getColor(); ?></p>
+                            <p>Size: <?php echo $item->getProduct()->getSize(); ?></p>
+                        </div>
+                    </td>
+                    <td>
+                        <p>₹ <?php echo $item->getPrice(); ?></p>
+                    </td>
+                    
+                    <?php $subTotal += $item->getPrice()*$item->getQty(); ?>
+                    
+                    <td>
+                        <button type='button' class='plus_button'><span  class="material-symbols-outlined text-sm font-bold">arrow_upward</span></button>
+                        <input type="number" class="qty w-4" value="<?php echo $item->getQty()?>" min="1" max="10" disabled onchange="updateQty(this.value)"/>
+                        <button type='button' class='minus_button'><span class="material-symbols-outlined text-sm font-bold">arrow_downward</span></button>
+                    </td>                
+                    <td>
+                        <p>
+                            <b>Total:</b>
+                                ₹ <?php echo $item->getRowTotal(); ?>
+                        </p>
+                    </td>
+
+                    <td>
+                        
+                            <a href="<?php echo $this->getUrl('sales/quote/delete')."?id=".$item->getItemId()?>"><button type='button' class="">
+                            <span class="material-symbols-outlined">delete</span>
+                            </button></a>
+                        
+                    </td>
+                    
+                </tr>
+                
+                
+            
+        <?php endforeach ?>
+    </table>
+
+
+
+    <div class="flex m-3 p-5 h-fit bg-[#edf0f3] rounded-lg justify-end">
+        
+        <div>
+            <table>
+                <tr>
+                    <td>Sub Total</td>
+                    <td class='text-right'>₹<?php echo (float)$subTotal; ?></td>
+                </tr>
+                
+                <tr>
+                    <td>Tax(<?php echo $quoteModel->getTaxPercent(); ?>%)</td>
+                    <td  class="flex justify-end"><?php echo $quoteModel->getGrandTotal() - $subTotal; ?></td>
+                </tr>
+                <tr>
+                    <td colspan=2><hr class="border-black w-full"></td>
+                </tr>
+                <tr>
+                    <td>Grand Total</td>
+                    <td>₹<?php echo $quoteModel->getGrandTotal(); ?> </td>
+                    
+                </tr>
+                <tr>
+                    <td colspan=2>
+
+                    <a href="<?php echo $this->getUrl('sales/quote/checkout') ?>"><button type='button' class="w-full p-2 rounded-md bg-yellow-300 hover:bg-yellow-600">Check Out</button></a>
+                    </td>
+                    
+                    
+                </tr>
+            </table>
+            
+        </div>
+    </div>
+
+<?php else: ?>
+        <div align='center' class='text-2xl font-semibold'>Cart is Empty</div>    
+<?php endif?>
+
+
+
+<script>
+    
+    $(document).ready(function () {
+        $('.plus_button').on('click', function(){
+        let inputField = $(this).closest('tr').find('.qty');
+        let quantity = parseInt(inputField.val());
+        
+        if (quantity < 10) {
+            quantity++;
+            inputField.val(quantity);
+            
+            let itemId = $(this).closest('tr').find('td:eq(0)').text(); // Get the item ID from the table row
+            let productId = $(this).closest('tr').find('td:eq(2)').text(); // Get the product ID from the table row
+            updateCart(productId, quantity, itemId);
+        }
+    });
+
+        $('.minus_button').on('click', function() {
+        let inputField = $(this).closest('tr').find('.qty');
+        let quantity = parseInt(inputField.val());
+        
+        if (quantity > 1) {
+            quantity--;
+            inputField.val(quantity);
+
+            let itemId = $(this).closest('tr').find('td:eq(0)').text(); // Get the item ID from the table row
+            let productId = $(this).closest('tr').find('td:eq(2)').text(); // Get the product ID from the table row
+            updateCart(productId, quantity, itemId);
+        }
+    });
+
+
+        function updateCart(productId, quantity, itemId) {
+            $.ajax({
+                url: "<?php echo $this->getUrl('sales/quote/updateItem'); ?>",
+                type: "POST",
+                data: {
+                    item_id: itemId,
+                    product_id: productId,
+                    qty: quantity
+                },
+                success: function(response) {
+                    
+                    console.log("success");
+                    window.location.href = "<?php echo $this->getUrl('sales/quote/view'); ?>";
+
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+
+                }
+            });
+        }
+    });
+
+
+
+   
+</script>
